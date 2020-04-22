@@ -1,9 +1,21 @@
 #!/usr/local/bin/bash
+#/*
+# * ----------------------------------------------------------------------------
+# * "THE BEER-WARE LICENSE" (Revision 42):
+# * <plasmoduck@gmail.com> wrote this file.  As long as you retain this notice you
+# * can do whatever you want with this stuff. If we meet some day, and you think
+# * this stuff is worth it, you can buy me a beer in return.   Plasmoduck
+# * ----------------------------------------------------------------------------
+# */
 
-mpc (){
-	SONG=`ncmpcpp --current-song -q`
-	echo "${SONG}"
+playing () {
+	 mpc -h 192.168.2.30 | awk 'NR==1 {song = $0} NR==2 {if ($1 == "[playing]") p=1; len=$(NF-1); sub(/.*\//, "", len)} END {printf("%s (%s) %s\n", p?"":"", len, song)}'
 }
+
+#mpc (){
+#	SONG=`ncmpcpp --current-song -q`
+#	echo "${SONG}"
+#}
 
 memory (){
 	free | awk '(NR == 18) {print $6}'
@@ -22,7 +34,7 @@ volume (){
 }
 
 print_date (){
-	date "+%b %d (%a), %H:%M "
+	date "+%b %d (%a), %H:%M:%S "
 }
 
 weather() {
@@ -39,6 +51,6 @@ weather() {
 
 while true
 do
-	xsetroot -name "  $(mpc)    $(memory)    $(drive)    $(cpu_temp)    $(volume)%    $(weather)    $(print_date)"
-	sleep 1
+	xsetroot -name " $(playing)    $(memory)    $(drive)    $(cpu_temp)    $(volume)%    $(weather)    $(print_date)"
+	sleep 1s
 done
