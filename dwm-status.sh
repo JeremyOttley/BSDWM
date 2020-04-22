@@ -12,10 +12,9 @@ playing () {
 	 mpc -h 192.168.2.30 | awk 'NR==1 {song = $0} NR==2 {if ($1 == "[playing]") p=1; len=$(NF-1); sub(/.*\//, "", len)} END {printf("%s (%s) %s\n", p?"":"", len, song)}'
 }
 
-#mpc (){
-#	SONG=`ncmpcpp --current-song -q`
-#	echo "${SONG}"
-#}
+covid19 () {
+	curl https://corona-stats.online/australia\?format\=json | python3 -c 'import sys,json;data=json.load(sys.stdin)["data"][0];print("", data["cases"],"","", "", data["deaths"])'
+}
 
 memory (){
 	free | awk '(NR == 18) {print $6}'
@@ -34,7 +33,7 @@ volume (){
 }
 
 print_date (){
-	date "+%b %d (%a), %H:%M:%S "
+	date "+%b %d (%a), %r "
 }
 
 weather() {
@@ -51,6 +50,6 @@ weather() {
 
 while true
 do
-	xsetroot -name " $(playing)    $(memory)    $(drive)    $(cpu_temp)    $(volume)%    $(weather)    $(print_date)"
+	xsetroot -name " $(playing)   $(covid19)    $(memory)    $(drive)    $(cpu_temp)    $(volume)%    $(weather)    $(print_date)"
 	sleep 1s
 done
