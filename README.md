@@ -1,2 +1,2 @@
-# dots
-My personal dotfiles for FreeBSD
+# FreeBSD
+https://github.com/plasmoduck/dots
